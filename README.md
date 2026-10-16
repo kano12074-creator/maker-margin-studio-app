@@ -10,7 +10,7 @@
 
 - バックエンド・外部API・ビルド工程・npm 依存はありません（HTML / CSS / JavaScript のみ）。
 - 入力データを外部へ送信しません。自動保存もしません（localStorage・Cookie も使いません）。
-- GitHub Pages でそのまま公開できます。
+- GitHub Pages で公開しています：**https://kano12074-creator.github.io/maker-margin-studio-app/**
 
 > 本ツールは入力値に基づいて試算するものです。税務・会計上の最終判断を自動化するものではありません。
 
@@ -27,7 +27,7 @@ tests/calc.test.js    計算ロジックの単体テスト（node:test、依存�
 tests/e2e.test.js     ブラウザ E2E テスト（Playwright。未導入なら自動スキップ）
 tests/MANUAL_TEST.md  手動テスト手順
 docs/EXAMPLES.md      使用例とサンプルデータ（期待値つき）
-docs/PUBLISHING.md    公開の現状、スマートフォンからの公開手順、公開後の確認チェックリスト
+docs/PUBLISHING.md    公開状態、更新と再設定の手順、公開後の確認チェックリスト
 SKILL.md              Claude Code に設計・計算・テスト・改善を依頼するための手順
 .nojekyll             GitHub Pages で Jekyll 処理を無効化
 .github/workflows/test.yml  push / PR 時に単体テストを実行
@@ -168,7 +168,7 @@ SKILL.md              Claude Code に設計・計算・テスト・改善を依�
 
 ## 4. 使い方
 
-1. `index.html` をブラウザで開くか、GitHub Pages の URL にアクセスします。初期状態で架空のサンプルデータが入っています。
+1. 公開版（https://kano12074-creator.github.io/maker-margin-studio-app/）にアクセスするか、手元の `index.html` をブラウザで開きます。初期状態で架空のサンプルデータが入っています。
 2. A〜F に自社の値を入力します。入力のたびに右側（スマートフォンでは下）の計算結果が更新されます。
 3. G に比較したい販売価格を入力すると、現在の価格と並べて比較できます。
 4. 「CSVを出力」で結果をダウンロードします（UTF-8 BOM 付き、CRLF 改行）。
@@ -239,30 +239,32 @@ Linux 上の Playwright Chromium（ヘッドレス）だけで実行しました
 - 実機の iOS Safari と Android Chrome での表示・操作（iPhone Safari の実機確認は未実施）
 - Firefox と Safari での動作
 - 出力した CSV を実際の Microsoft Excel で開いたときの表示（BOM・エスケープの内容はテストで確認済み）
-- GitHub Pages に公開した状態での動作（公開後に [docs/PUBLISHING.md](docs/PUBLISHING.md) のチェックリストで確認する）
+- 公開した GitHub Pages 上での画面の表示・操作（[docs/PUBLISHING.md](docs/PUBLISHING.md) のチェックリストでの確認結果は、まだ記録されていません）
 
-## 6. GitHub Pages で公開する手順
+## 6. GitHub Pages での公開
 
-ビルドは不要です。リポジトリのルートをそのまま公開します。
+### 公開状態
 
-- スマートフォンからの画面ごとの手順と、公開後の確認チェックリストは [docs/PUBLISHING.md](docs/PUBLISHING.md) にまとめています。
-- GitHub Free プランでは、Pages を使うためにリポジトリを Public にする必要があります（有料プランなら Private のままでも使えます）。
+| 項目 | 状態 |
+|---|---|
+| 公開URL | https://kano12074-creator.github.io/maker-margin-studio-app/ |
+| リポジトリの公開範囲 | Public |
+| 配信元 | `main` ブランチ |
+| 最初の公開 | 2026-10-16（GitHub の「pages build and deployment」が成功し、上記URLが記録されたことを確認） |
 
-1. 公開するファイルが `main` ブランチに入っていることを確認します。
-2. GitHub のリポジトリ画面で **Settings → Pages** を開きます。
-3. **Build and deployment → Source** で **Deploy from a branch** を選びます。
-4. **Branch** で `main`、フォルダは `/ (root)` を選び、**Save** を押します。
-5. 数分後、同じ画面に `https://<ユーザー名>.github.io/<リポジトリ名>/` が表示されます。アクセスして動作を確認してください。
-6. 更新するときは、`main` に push すると自動で再公開されます。
+ビルドは不要で、リポジトリのルートをそのまま配信しています。`.nojekyll` を置いて Jekyll の処理を無効にしています。
 
-補足：
+### 更新するとき
 
-- `.nojekyll` を置いて Jekyll の処理を無効にしています。
-- 無料プランで GitHub Pages を使うには、リポジトリを public にする必要があります。private リポジトリで公開するには有料プランが必要です。
-- 公開後の確認項目：
-  - サンプルの計算結果が [docs/EXAMPLES.md](docs/EXAMPLES.md) の期待値と一致する
-  - ブラウザの開発者ツールのネットワークタブで、外部ドメインへの通信がない
-  - CSV がダウンロードできる
+1. 変更を `main` ブランチに push（またはプルリクエストをマージ）します。
+2. GitHub の **Actions** タブで「pages build and deployment」が緑のチェックになるまで待ちます（通常は数分）。
+3. 公開URLを再読み込みして、変更が反映されていることを確認します。ブラウザのキャッシュで古い表示が残る場合があります。
+
+### 注意
+
+- GitHub Free プランでは、Private リポジトリで Pages を使えません。このリポジトリを Private に戻すと、公開サイトも閲覧できなくなります。
+- Public リポジトリのため、ソースコード・コミット履歴・Actions の実行記録は誰でも閲覧できます。
+- Pages の設定をやり直す手順（スマートフォン向け）と、公開後の確認チェックリストは [docs/PUBLISHING.md](docs/PUBLISHING.md) にあります。
 
 ## 7. 制約と今後の拡張候補
 
